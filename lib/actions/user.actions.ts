@@ -1,5 +1,5 @@
 'use server'
-import { CreateUserParams } from "@/types"
+import { CreateUserParams, UpdateUserParams } from "@/types"
 import { handleError } from "../utils"
 import { connectToDatabase } from "../database"
 import User from "../database/models/user.model"
