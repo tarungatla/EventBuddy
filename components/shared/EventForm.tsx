@@ -15,12 +15,12 @@ import { useState } from "react"
 import Image from "next/image"
 import DatePicker from "react-datepicker";
 import { useUploadThing } from '@/lib/uploadthing'
-
 import "react-datepicker/dist/react-datepicker.css";
 import { Checkbox } from "../ui/checkbox"
 import { useRouter } from "next/navigation"
 import { createEvent, updateEvent } from "@/lib/actions/event.actions"
 import { IEvent } from "@/lib/database/models/event.model"
+import { Router } from "lucide-react"
 
 
 type EventFormProps = {
@@ -49,7 +49,33 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
   })
  
   async function onSubmit(values: z.infer<typeof eventFormSchema>) {
-    console.log(values)
+
+    let uploadedImageUrl = values.imageUrl;
+
+    if (files.length > 0) {
+      const uploadedImages = await startUpload(files) //from upladthing
+
+      if (!uploadedImages) return; 
+
+      uploadedImageUrl = uploadedImages[0].url
+      
+    }
+    if (type === 'Create') {
+      try {
+        const newEvent = await createEvent({
+          event: { ...values, imageUrl: uploadedImageUrl },
+          userId,
+          path: '/profile'
+        })
+
+        if (newEvent) {
+          form.reset();
+          router.push(`/events/${newEvent.id}`)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 
   return (
