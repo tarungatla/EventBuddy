@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Footer = () => {
+  // Get the current year
+  const currentYear = new Date().getFullYear();
+
   // Render the footer section
   return (
     <footer className="border-t">
@@ -17,7 +20,7 @@ const Footer = () => {
           />
         </Link>
 
-        <p>2023 EventBuddy. All Rights reserved.</p>
+        <p>{currentYear} EventBuddy. All Rights reserved.</p>
       </div>
     </footer>
   );
